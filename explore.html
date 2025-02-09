@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Explore - GLOBAL NOVELS</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+    <style>
+        body {
+            padding-top: 70px;
+        }
+
+        .novel-card {
+            border: none;
+            overflow: hidden;
+            border-radius: 15px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background: white;
+        }
+
+        .novel-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .novel-card img {
+            height: 600px;
+            object-fit: cover;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+        }
+
+        .btn-gradient {
+            background: linear-gradient(45deg, #ff7e5f, #feb47b);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            transition: all 0.3s ease-in-out;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .btn-gradient:hover {
+            background: linear-gradient(45deg, #feb47b, #ff7e5f);
+            transform: scale(1.05);
+        }
+
+        .transition {
+            transition: all 0.3s ease;
+            border-width: 2px;
+        }
+
+        .transition:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-outline-light:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-primary:hover {
+            background-color: #0b5ed7 !important;
+            border-color: #0b5ed7 !important;
+        }
+
+        .text-gradient {
+            background: linear-gradient(90deg, #ff7e5f, #feb47b);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        h1.display-4 {
+            font-size: 2.5rem;
+            letter-spacing: 1.5px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+
+<body>
+    <header class="bg-dark text-white py-3 fixed-top">
+        <div class="container d-flex justify-content-between align-items-center">
+            <h1 class="display-4 fw-bold text-gradient">GLOBAL NOVELS</h1>
+            <nav>
+                <ul class="nav gap-2">
+                    <li class="nav-item">
+                        <a href="index.html"
+                            class="nav-link btn btn-outline-light rounded-pill px-3 py-2 transition">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="index.html"
+                            class="nav-link btn btn-outline-light rounded-pill px-3 py-2 transition">Popular</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="categorie.html"
+                            class="nav-link btn btn-outline-light rounded-pill px-3 py-2 transition">Categories</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="login.html"
+                            class="nav-link btn btn-outline-light rounded-pill px-3 py-2 transition">Login</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="py-5">
+        <div class="container">
+            <h2 class="mb-4 text-center fw-bold">Explore Novels</h2>
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <label for="sort" class="form-label me-2">Sort by:</label>
+                    <select id="sort" class="form-select d-inline-block w-auto">
+                        <option value="popular">Most Popular</option>
+                        <option value="new">Newest</option>
+                        <option value="rating">Highest Rated</option>
+                    </select>
+                </div>
+                <form class="d-flex">
+                    <input class="form-control me-2" type="search" placeholder="Search novels..." aria-label="Search" />
+                    <button class="btn btn-primary" type="submit">Search</button>
+                </form>
+            </div>
+
+            <div class="row g-4" id="novel-list"></div>
+        </div>
+    </main>
+
+    <footer class="bg-dark text-white py-4">
+        <div class="container d-flex justify-content-between align-items-center">
+            <p class="mb-0">&copy; 2025 MyWebNovel. All rights reserved.</p>
+            <nav>
+                <ul class="nav">
+                    <li class="nav-item">
+                        <a href="about.html" class="nav-link text-white">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="about.html" class="nav-link text-white">Terms of Service</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="about.html" class="nav-link text-white">Privacy Policy</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </footer>
+
+    <script>
+        const novels = {
+            popular: [
+                { title: "The Hero's Journey", desc: "A thrilling adventure of a hero destined to save the world.", img: "img/1.jpg", link: "novels/novel5.html" },
+                { title: "Romance in Paris", desc: "A heartwarming tale of love and destiny in the city of lights.", img: "img/2.jpg", link: "novels/novel2.html" },
+                { title: "The Lost Kingdom", desc: "Uncover the secrets of a forgotten realm in this epic fantasy.", img: "img/3.png", link: "novels/novel3.html" }
+            ],
+            new: [
+                { title: "Future Chronicles", desc: "A sci-fi adventure into the unknown.", img: "img/4.jpg", link: "novels/novel4.html" },
+                { title: "Dark Secrets", desc: "A mystery thriller that will keep you on edge.", img: "img/5.jpg", link: "novels/novel1.html" },
+                { title: "Beyond the Stars", desc: "An interstellar tale of love and war.", img: "img/6.jpg", link: "novels/novel6.html" }
+            ],
+            rating: [
+                { title: "Echoes of the Past", desc: "A historical drama full of passion and intrigue.", img: "img/10.jpg", link: "novels/novel7.html" },
+                { title: "The Shadow War", desc: "A battle between light and darkness.", img: "img/8.jpg", link: "novels/novel8.html" },
+                { title: "Fallen Empire", desc: "An epic story of rise and fall.", img: "img/9.jpg", link: "novels/novel9.html" }
+            ]
+        };
+
+        function updateNovels(category) {
+            const container = document.getElementById("novel-list");
+            container.innerHTML = "";
+            novels[category].forEach((novel) => {
+                container.innerHTML += `
+                    <div class="col-md-4">
+                        <div class="card novel-card">
+                            <img src="${novel.img}" class="card-img-top" alt="${novel.title}">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">${novel.title}</h5>
+                                <p class="card-text">${novel.desc}</p>
+                                <a href="${novel.link}" class="btn btn-gradient">Read More</a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        document.getElementById("sort").addEventListener("change", function () {
+            updateNovels(this.value);
+        });
+
+        updateNovels("popular");
+    </script>
+</body>
+
+</html>
