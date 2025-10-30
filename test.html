@@ -1,0 +1,1478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Germane Restaurant - Dashboard</title>
+    <style>
+        :root {
+            --cream: #FFF8F0;
+            --cream-dark: #F5E6D3;
+            --brown: #4A3728;
+            --brown-dark: #2C1810;
+            --gold: #D4AF37;
+            --gold-light: #F4D03F;
+            --gold-dark: #B8941F;
+            --white: #FFFFFF;
+            --gray-light: #F5F5F5;
+            --gray: #9E9E9E;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --error: #F44336;
+
+            --font-serif: 'Georgia', serif;
+            --font-sans: 'Arial', sans-serif;
+
+            --transition: all 0.3s ease;
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 8px rgba(0,0,0,0.1);
+            --shadow-lg: 0 8px 16px rgba(0,0,0,0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            color: var(--brown);
+            background-color: var(--cream);
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--font-serif);
+            line-height: 1.2;
+            font-weight: 600;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+        }
+
+        h3 {
+            font-size: 2rem;
+        }
+
+        h4 {
+            font-size: 1.5rem;
+        }
+
+        button {
+            font-family: var(--font-sans);
+            cursor: pointer;
+            border: none;
+            transition: var(--transition);
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition);
+        }
+
+        .btn {
+            padding: 12px 32px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+            color: var(--white);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-secondary {
+            background: var(--brown);
+            color: var(--white);
+        }
+
+        .btn-secondary:hover {
+            background: var(--brown-dark);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.6s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .slide-in {
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        input, textarea, select {
+            font-family: var(--font-sans);
+            padding: 12px 16px;
+            border: 2px solid var(--cream-dark);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: var(--transition);
+            width: 100%;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--gold);
+        }
+
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 400px;
+        }
+
+        .spinner {
+            width: 48px;
+            height: 48px;
+            border: 4px solid var(--cream-dark);
+            border-top-color: var(--gold);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Navigation */
+        .navbar {
+            background: var(--white);
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 24px;
+        }
+
+        .nav-logo {
+            font-family: var(--font-serif);
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--brown-dark);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+        }
+
+        .nav-link {
+            font-weight: 600;
+            color: var(--brown);
+            padding: 8px 16px;
+            border-radius: 6px;
+        }
+
+        .nav-link:hover {
+            background: var(--cream);
+        }
+
+        .nav-link.active {
+            background: var(--gold);
+            color: var(--white);
+        }
+
+        /* Home Page */
+        .hero {
+            height: 600px;
+            background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.4)),
+                url('https://images.pexels.com/photos/941861/pexels-photo-941861.jpeg') center/cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            color: var(--white);
+            text-align: center;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.5));
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            padding: 0 24px;
+        }
+
+        .hero h1 {
+            font-size: 4.5rem;
+            margin-bottom: 16px;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-subtitle {
+            font-size: 1.8rem;
+            font-family: var(--font-serif);
+            margin-bottom: 16px;
+            color: var(--gold-light);
+        }
+
+        .hero-description {
+            font-size: 1.2rem;
+            margin-bottom: 32px;
+            line-height: 1.8;
+        }
+
+        /* Dashboard Navigation */
+        .dashboard-nav {
+            background: var(--brown-dark);
+            padding: 16px 0;
+            position: sticky;
+            top: 80px;
+            z-index: 99;
+        }
+
+        .dashboard-nav-container {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+        }
+
+        .dashboard-nav-link {
+            color: var(--white);
+            font-weight: 600;
+            padding: 8px 24px;
+            border-radius: 20px;
+            transition: var(--transition);
+        }
+
+        .dashboard-nav-link.active {
+            background: var(--gold);
+            color: var(--brown-dark);
+        }
+
+        .dashboard-nav-link:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Admin Dashboard */
+        .admin-header {
+            background: linear-gradient(135deg, var(--brown-dark) 0%, var(--gold-dark) 100%);
+            color: var(--white);
+            padding: 60px 0 40px;
+            text-align: center;
+        }
+
+        .admin-header h1 {
+            margin-bottom: 8px;
+        }
+
+        .admin-header p {
+            font-size: 1.1rem;
+        }
+
+        .admin-container {
+            padding: 48px 24px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+            margin-bottom: 48px;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 32px 24px;
+            background: linear-gradient(135deg, var(--white) 0%, var(--cream) 100%);
+        }
+
+        .stat-value {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--gold-dark);
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+            color: var(--brown);
+            font-weight: 600;
+        }
+
+        .menu-management {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 32px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+
+        .section-header h2 {
+            color: var(--brown-dark);
+        }
+
+        .menu-table {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: var(--cream-dark);
+        }
+
+        th {
+            padding: 16px;
+            text-align: left;
+            font-weight: 700;
+            color: var(--brown-dark);
+            border-bottom: 2px solid var(--brown);
+        }
+
+        td {
+            padding: 16px;
+            border-bottom: 1px solid var(--cream-dark);
+        }
+
+        tr:hover {
+            background: var(--cream);
+        }
+
+        .item-cell {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .item-thumb {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .category-badge {
+            background: var(--brown);
+            color: var(--white);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            text-transform: capitalize;
+        }
+
+        .price-cell {
+            font-weight: 700;
+            color: var(--gold-dark);
+            font-size: 1.1rem;
+        }
+
+        .status-badge.available {
+            background: var(--success);
+            color: var(--white);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+        }
+
+        .status-badge.unavailable {
+            background: var(--gray);
+            color: var(--white);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+        }
+
+        .featured-badge {
+            color: var(--gold);
+            font-size: 1.5rem;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-icon {
+            padding: 8px 12px;
+            background: var(--cream-dark);
+            border-radius: 6px;
+            font-size: 1.2rem;
+            transition: var(--transition);
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-icon:hover {
+            background: var(--gold);
+            color: var(--white);
+        }
+
+        .btn-icon.delete:hover {
+            background: var(--error);
+        }
+
+        /* Server Dashboard */
+        .server-header {
+            background: linear-gradient(135deg, var(--brown) 0%, var(--brown-dark) 100%);
+            color: var(--white);
+            padding: 60px 0 40px;
+            text-align: center;
+        }
+
+        .server-header h1 {
+            margin-bottom: 8px;
+        }
+
+        .server-header p {
+            font-size: 1.1rem;
+            color: var(--cream);
+        }
+
+        .server-container {
+            padding: 48px 24px;
+        }
+
+        .tables-section,
+        .orders-section {
+            margin-bottom: 48px;
+        }
+
+        .tables-section h2,
+        .orders-section h2 {
+            color: var(--brown-dark);
+            margin-bottom: 24px;
+        }
+
+        .tables-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        .table-card {
+            cursor: pointer;
+            text-align: center;
+            padding: 24px;
+            border: 3px solid transparent;
+        }
+
+        .table-card.available {
+            border-color: var(--success);
+            background: #E8F5E9;
+        }
+
+        .table-card.occupied {
+            border-color: var(--warning);
+            background: #FFF3E0;
+        }
+
+        .table-card.reserved {
+            border-color: var(--gold);
+            background: #FFF8F0;
+        }
+
+        .table-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--brown-dark);
+            margin-bottom: 12px;
+        }
+
+        .table-info {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: capitalize;
+            display: inline-block;
+        }
+
+        .status-badge.available,
+        .status-badge.completed {
+            background: var(--success);
+            color: var(--white);
+        }
+
+        .status-badge.occupied,
+        .status-badge.pending {
+            background: var(--warning);
+            color: var(--white);
+        }
+
+        .status-badge.reserved,
+        .status-badge.sent_to_kitchen {
+            background: var(--gold);
+            color: var(--white);
+        }
+
+        .status-badge.preparing {
+            background: #FF9800;
+            color: var(--white);
+        }
+
+        .status-badge.ready {
+            background: #4CAF50;
+            color: var(--white);
+        }
+
+        .table-actions {
+            margin-top: 12px;
+        }
+
+        .table-actions .btn {
+            width: 100%;
+            padding: 8px 16px;
+            font-size: 0.9rem;
+        }
+
+        .orders-list {
+            display: grid;
+            gap: 24px;
+        }
+
+        .order-card {
+            background: var(--white);
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid var(--cream-dark);
+        }
+
+        .order-header h3 {
+            color: var(--brown-dark);
+        }
+
+        .order-items {
+            margin-bottom: 16px;
+        }
+
+        .order-item {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--cream-dark);
+            align-items: center;
+        }
+
+        .order-item:last-child {
+            border-bottom: none;
+        }
+
+        .item-quantity {
+            font-weight: 700;
+            color: var(--brown);
+            min-width: 40px;
+        }
+
+        .item-name {
+            color: var(--brown);
+        }
+
+        .item-price {
+            font-weight: 700;
+            color: var(--gold-dark);
+        }
+
+        .special-instructions {
+            grid-column: 2 / 4;
+            font-size: 0.9rem;
+            color: var(--gray);
+            font-style: italic;
+        }
+
+        .order-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 16px;
+            border-top: 2px solid var(--brown);
+        }
+
+        .order-total {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--gold-dark);
+        }
+
+        .order-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .order-time {
+            margin-top: 12px;
+            font-size: 0.9rem;
+            color: var(--gray);
+            text-align: right;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 64px 24px;
+            color: var(--gray);
+        }
+
+        .empty-state p {
+            font-size: 1.2rem;
+        }
+
+        /* Chef Dashboard */
+        .kitchen-header {
+            background: linear-gradient(135deg, #E65100 0%, #FF6F00 100%);
+            color: var(--white);
+            padding: 40px 0;
+            text-align: center;
+        }
+
+        .kitchen-header h1 {
+            margin-bottom: 8px;
+        }
+
+        .kitchen-header p {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .kitchen-container {
+            padding: 32px 24px;
+            max-width: 1400px;
+        }
+
+        .orders-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 24px;
+        }
+
+        .kitchen-order {
+            border: 3px solid transparent;
+            position: relative;
+        }
+
+        .kitchen-order.sent_to_kitchen {
+            border-color: #FF9800;
+            animation: pulse 2s infinite;
+        }
+
+        .kitchen-order.preparing {
+            border-color: #2196F3;
+        }
+
+        .kitchen-order.urgent {
+            border-color: #F44336;
+            animation: urgentPulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(255, 152, 0, 0.7);
+            }
+            50% {
+                box-shadow: 0 0 0 10px rgba(255, 152, 0, 0);
+            }
+        }
+
+        @keyframes urgentPulse {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(244, 67, 54, 0.7);
+            }
+            50% {
+                box-shadow: 0 0 0 10px rgba(244, 67, 54, 0);
+            }
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 3px solid var(--cream-dark);
+        }
+
+        .order-info h2 {
+            color: var(--brown-dark);
+            font-size: 2rem;
+            margin-bottom: 4px;
+        }
+
+        .order-time {
+            font-size: 1rem;
+            color: var(--gray);
+            font-weight: 600;
+        }
+
+        .kitchen-order.urgent .order-time {
+            color: #F44336;
+            font-weight: 700;
+        }
+
+        .order-items-list {
+            margin-bottom: 20px;
+        }
+
+        .kitchen-item {
+            background: var(--cream);
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            border-left: 4px solid var(--gray);
+        }
+
+        .kitchen-item.preparing {
+            background: #E3F2FD;
+            border-left-color: #2196F3;
+        }
+
+        .kitchen-item.ready {
+            background: #E8F5E9;
+            border-left-color: #4CAF50;
+        }
+
+        .item-header {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .item-quantity {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--brown-dark);
+            min-width: 40px;
+        }
+
+        .item-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--brown);
+        }
+
+        .item-status {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .item-status.ready {
+            color: #4CAF50;
+        }
+
+        .item-status.preparing {
+            color: #2196F3;
+        }
+
+        .item-status.pending {
+            color: var(--gray);
+        }
+
+        .item-notes {
+            background: var(--white);
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            margin-bottom: 12px;
+            border-left: 3px solid #FF9800;
+        }
+
+        .item-notes strong {
+            color: #FF9800;
+            margin-right: 4px;
+        }
+
+        .btn-sm {
+            padding: 6px 16px;
+            font-size: 0.9rem;
+        }
+
+        .order-actions {
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 2px solid var(--cream-dark);
+        }
+
+        .btn-full {
+            width: 100%;
+        }
+
+        .btn-full:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 120px 24px;
+        }
+
+        .empty-icon {
+            width: 120px;
+            height: 120px;
+            background: var(--success);
+            color: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+            margin: 0 auto 32px;
+            animation: scaleIn 0.5s ease;
+        }
+
+        .empty-state h2 {
+            color: var(--brown-dark);
+            margin-bottom: 12px;
+        }
+
+        .empty-state p {
+            color: var(--gray);
+            font-size: 1.2rem;
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0);
+            }
+            to {
+                transform: scale(1);
+            }
+        }
+
+        /* Dashboard Pages */
+        .dashboard-page {
+            display: none;
+        }
+
+        .dashboard-page.active {
+            display: block;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--brown-dark);
+            color: var(--white);
+            padding: 48px 0 24px;
+            margin-top: 64px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 32px;
+            margin-bottom: 32px;
+        }
+
+        .footer-section h3 {
+            color: var(--gold);
+            margin-bottom: 16px;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .hero h1 {
+                font-size: 3rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.4rem;
+            }
+
+            .dashboard-nav-container {
+                flex-wrap: wrap;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-header {
+                flex-direction: column;
+                gap: 16px;
+                align-items: stretch;
+            }
+
+            .menu-table {
+                font-size: 0.9rem;
+            }
+
+            th, td {
+                padding: 8px;
+            }
+
+            .item-thumb {
+                width: 40px;
+                height: 40px;
+            }
+
+            .tables-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+
+            .order-item {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+
+            .special-instructions {
+                grid-column: 1;
+            }
+
+            .order-footer {
+                flex-direction: column;
+                gap: 16px;
+                align-items: stretch;
+            }
+
+            .order-actions {
+                flex-direction: column;
+            }
+
+            .orders-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .order-info h2 {
+                font-size: 1.5rem;
+            }
+
+            .item-header {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+
+            .item-status {
+                grid-row: 1;
+                justify-self: end;
+            }
+        }
+    </style>
+</head>
+<body>
+
+
+    <!-- Dashboard Navigation -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="#" class="dashboard-nav-link active" onclick="showDashboard('admin')">Admin Dashboard</a>
+            <a href="#" class="dashboard-nav-link" onclick="showDashboard('server')">Server Dashboard</a>
+            <a href="#" class="dashboard-nav-link" onclick="showDashboard('chef')">Chef Dashboard</a>
+        </div>
+    </nav>
+
+    <!-- Admin Dashboard -->
+    <div id="admin-dashboard" class="dashboard-page active">
+        <div class="admin-header">
+            <div class="container">
+                <h1 class="fade-in">Admin Dashboard</h1>
+                <p>Manage your restaurant</p>
+            </div>
+        </div>
+
+        <div class="container admin-container">
+            <div class="stats-grid slide-in">
+                <div class="stat-card card">
+                    <div class="stat-value">127</div>
+                    <div class="stat-label">Total Orders</div>
+                </div>
+                <div class="stat-card card">
+                    <div class="stat-value">$4,567.89</div>
+                    <div class="stat-label">Total Revenue</div>
+                </div>
+                <div class="stat-card card">
+                    <div class="stat-value">12</div>
+                    <div class="stat-label">Active Orders</div>
+                </div>
+                <div class="stat-card card">
+                    <div class="stat-value">8</div>
+                    <div class="stat-label">Today's Reservations</div>
+                </div>
+            </div>
+
+            <div class="menu-management fade-in">
+                <div class="section-header">
+                    <h2>Menu Management</h2>
+                    <button class="btn btn-primary">
+                        + Add New Dish
+                    </button>
+                </div>
+
+                <div class="menu-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Category</th>
+                                <th>Price</th>
+                                <th>Status</th>
+                                <th>Featured</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="item-cell">
+                                        <img src="https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg" alt="Margherita Pizza" class="item-thumb">
+                                        <span>Margherita Pizza</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="category-badge">mains</span>
+                                </td>
+                                <td class="price-cell">$14.99</td>
+                                <td>
+                                    <span class="status-badge available">Available</span>
+                                </td>
+                                <td>
+                                    <span class="featured-badge">★</span>
+                                </td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn-icon" title="Edit">✎</button>
+                                        <button class="btn-icon delete" title="Delete">✕</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="item-cell">
+                                        <img src="https://images.pexels.com/photos/699953/pexels-photo-699953.jpeg" alt="Caesar Salad" class="item-thumb">
+                                        <span>Caesar Salad</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="category-badge">starters</span>
+                                </td>
+                                <td class="price-cell">$9.99</td>
+                                <td>
+                                    <span class="status-badge available">Available</span>
+                                </td>
+                                <td></td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn-icon" title="Edit">✎</button>
+                                        <button class="btn-icon delete" title="Delete">✕</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="item-cell">
+                                        <img src="https://images.pexels.com/photos/376464/pexels-photo-376464.jpeg" alt="Chocolate Cake" class="item-thumb">
+                                        <span>Chocolate Cake</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="category-badge">desserts</span>
+                                </td>
+                                <td class="price-cell">$7.99</td>
+                                <td>
+                                    <span class="status-badge unavailable">Unavailable</span>
+                                </td>
+                                <td>
+                                    <span class="featured-badge">★</span>
+                                </td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn-icon" title="Edit">✎</button>
+                                        <button class="btn-icon delete" title="Delete">✕</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Server Dashboard -->
+    <div id="server-dashboard" class="dashboard-page">
+        <div class="server-header">
+            <div class="container">
+                <h1 class="fade-in">Server Dashboard</h1>
+                <p>Manage orders and table status</p>
+            </div>
+        </div>
+
+        <div class="container server-container">
+            <div class="tables-section slide-in">
+                <h2>Tables</h2>
+                <div class="tables-grid">
+                    <div class="table-card card available">
+                        <div class="table-number">Table 1</div>
+                        <div class="table-info">
+                            <span>Capacity: 4</span>
+                            <span class="status-badge available">available</span>
+                        </div>
+                        <div class="table-actions">
+                            <button class="btn btn-primary">Seat Guests</button>
+                        </div>
+                    </div>
+                    <div class="table-card card occupied">
+                        <div class="table-number">Table 2</div>
+                        <div class="table-info">
+                            <span>Capacity: 6</span>
+                            <span class="status-badge occupied">occupied</span>
+                        </div>
+                        <div class="table-actions">
+                            <button class="btn btn-secondary">Clear Table</button>
+                        </div>
+                    </div>
+                    <div class="table-card card reserved">
+                        <div class="table-number">Table 3</div>
+                        <div class="table-info">
+                            <span>Capacity: 2</span>
+                            <span class="status-badge reserved">reserved</span>
+                        </div>
+                        <div class="table-actions">
+                            <button class="btn btn-secondary">Clear Table</button>
+                        </div>
+                    </div>
+                    <div class="table-card card occupied">
+                        <div class="table-number">Table 4</div>
+                        <div class="table-info">
+                            <span>Capacity: 8</span>
+                            <span class="status-badge occupied">occupied</span>
+                        </div>
+                        <div class="table-actions">
+                            <button class="btn btn-secondary">Clear Table</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="orders-section fade-in">
+                <h2>Active Orders</h2>
+                <div class="orders-list">
+                    <div class="order-card card">
+                        <div class="order-header">
+                            <h3>Table 2</h3>
+                            <span class="status-badge sent_to_kitchen">sent to kitchen</span>
+                        </div>
+
+                        <div class="order-items">
+                            <div class="order-item">
+                                <span class="item-quantity">2x</span>
+                                <span class="item-name">Margherita Pizza</span>
+                                <span class="item-price">$29.98</span>
+                            </div>
+                            <div class="order-item">
+                                <span class="item-quantity">1x</span>
+                                <span class="item-name">Caesar Salad</span>
+                                <span class="item-price">$9.99</span>
+                                <span class="special-instructions">No croutons</span>
+                            </div>
+                        </div>
+
+                        <div class="order-footer">
+                            <span class="order-total">Total: $39.97</span>
+                            <div class="order-actions">
+                                <button class="btn btn-primary">Send to Kitchen</button>
+                            </div>
+                        </div>
+
+                        <div class="order-time">
+                            Created: 12:45 PM
+                        </div>
+                    </div>
+
+                    <div class="order-card card">
+                        <div class="order-header">
+                            <h3>Takeout</h3>
+                            <span class="status-badge ready">ready</span>
+                        </div>
+
+                        <div class="order-items">
+                            <div class="order-item">
+                                <span class="item-quantity">1x</span>
+                                <span class="item-name">Chicken Alfredo</span>
+                                <span class="item-price">$16.99</span>
+                            </div>
+                            <div class="order-item">
+                                <span class="item-quantity">2x</span>
+                                <span class="item-name">Garlic Bread</span>
+                                <span class="item-price">$7.98</span>
+                            </div>
+                        </div>
+
+                        <div class="order-footer">
+                            <span class="order-total">Total: $24.97</span>
+                            <div class="order-actions">
+                                <button class="btn btn-primary">Mark as Served</button>
+                            </div>
+                        </div>
+
+                        <div class="order-time">
+                            Created: 12:15 PM
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chef Dashboard -->
+    <div id="chef-dashboard" class="dashboard-page">
+        <div class="kitchen-header">
+            <div class="container">
+                <h1 class="fade-in">Kitchen Display</h1>
+                <p>Active Orders: 3</p>
+            </div>
+        </div>
+
+        <div class="container kitchen-container">
+            <div class="orders-grid">
+                <div class="kitchen-order card sent_to_kitchen urgent fade-in">
+                    <div class="order-header">
+                        <div class="order-info">
+                            <h2>Table 2</h2>
+                            <span class="order-time">15 mins ago</span>
+                        </div>
+                        <span class="status-badge sent_to_kitchen">NEW ORDER</span>
+                    </div>
+
+                    <div class="order-items-list">
+                        <div class="kitchen-item pending">
+                            <div class="item-header">
+                                <span class="item-quantity">2x</span>
+                                <span class="item-name">Margherita Pizza</span>
+                                <span class="item-status pending">○</span>
+                            </div>
+                            <div class="item-notes">
+                                <strong>Note:</strong> Extra cheese
+                            </div>
+                            <button class="btn btn-secondary btn-sm">Mark Ready</button>
+                        </div>
+                        <div class="kitchen-item ready">
+                            <div class="item-header">
+                                <span class="item-quantity">1x</span>
+                                <span class="item-name">Caesar Salad</span>
+                                <span class="item-status ready">✓</span>
+                            </div>
+                            <div class="item-notes">
+                                <strong>Note:</strong> No croutons
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="order-actions">
+                        <button class="btn btn-primary btn-full">Start Preparing</button>
+                    </div>
+                </div>
+
+                <div class="kitchen-order card preparing fade-in">
+                    <div class="order-header">
+                        <div class="order-info">
+                            <h2>Takeout</h2>
+                            <span class="order-time">8 mins ago</span>
+                        </div>
+                        <span class="status-badge preparing">IN PROGRESS</span>
+                    </div>
+
+                    <div class="order-items-list">
+                        <div class="kitchen-item preparing">
+                            <div class="item-header">
+                                <span class="item-quantity">1x</span>
+                                <span class="item-name">Chicken Alfredo</span>
+                                <span class="item-status preparing">○</span>
+                            </div>
+                            <button class="btn btn-secondary btn-sm">Mark Ready</button>
+                        </div>
+                        <div class="kitchen-item ready">
+                            <div class="item-header">
+                                <span class="item-quantity">2x</span>
+                                <span class="item-name">Garlic Bread</span>
+                                <span class="item-status ready">✓</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="order-actions">
+                        <button class="btn btn-primary btn-full" disabled>Waiting for all items...</button>
+                    </div>
+                </div>
+
+                <div class="kitchen-order card sent_to_kitchen fade-in">
+                    <div class="order-header">
+                        <div class="order-info">
+                            <h2>Table 4</h2>
+                            <span class="order-time">5 mins ago</span>
+                        </div>
+                        <span class="status-badge sent_to_kitchen">NEW ORDER</span>
+                    </div>
+
+                    <div class="order-items-list">
+                        <div class="kitchen-item pending">
+                            <div class="item-header">
+                                <span class="item-quantity">1x</span>
+                                <span class="item-name">Grilled Salmon</span>
+                                <span class="item-status pending">○</span>
+                            </div>
+                            <div class="item-notes">
+                                <strong>Note:</strong> Well done
+                            </div>
+                            <button class="btn btn-secondary btn-sm">Mark Ready</button>
+                        </div>
+                        <div class="kitchen-item pending">
+                            <div class="item-header">
+                                <span class="item-quantity">1x</span>
+                                <span class="item-name">Mashed Potatoes</span>
+                                <span class="item-status pending">○</span>
+                            </div>
+                            <button class="btn btn-secondary btn-sm">Mark Ready</button>
+                        </div>
+                    </div>
+
+                    <div class="order-actions">
+                        <button class="btn btn-primary btn-full">Start Preparing</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Germane Restaurant</h3>
+                    <p>A Taste of Elegance</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Hours</h3>
+                    <p>Monday - Friday: 11am - 10pm</p>
+                    <p>Saturday - Sunday: 10am - 11pm</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <p>123 Gourmet Street</p>
+                    <p>Foodville, FK 12345</p>
+                    <p>(555) 123-4567</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 Germane Restaurant. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function showDashboard(dashboard) {
+            // Hide all dashboard pages
+            document.querySelectorAll('.dashboard-page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Show selected dashboard
+            document.getElementById(`${dashboard}-dashboard`).classList.add('active');
+            
+            // Update active nav link
+            document.querySelectorAll('.dashboard-nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>
